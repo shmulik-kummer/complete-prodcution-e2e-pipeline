@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent{
         label "jenkins-agent"
     }
@@ -90,20 +90,20 @@ pipeline{
             }
         }
 
-        stage("Update Deployment File") {
-            steps {
-                dir("gitops") {
-                    script {
-                        sh "sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
-                        sh "git config user.email 'jenkins@example.com'"
-                        sh "git config user.name 'Jenkins'"
-                        sh "git add deployment.yaml"
-                        sh "git commit -m 'Update image tag to ${IMAGE_TAG}'"
-                        sh "git push origin main"
-                    }
-                }
-            }
-        }
+        // stage("Update Deployment File") {
+        //     steps {
+        //         dir("gitops") {
+        //             script {
+        //                 sh "sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
+        //                 sh "git config user.email 'jenkins@example.com'"
+        //                 sh "git config user.name 'Jenkins'"
+        //                 sh "git add deployment.yaml"
+        //                 sh "git commit -m 'Update image tag to ${IMAGE_TAG}'"
+        //                 sh "git push origin main"
+        //             }
+        //         }
+        //     }
+        // }
 
         // stage("Trivy Scan") {
         //     steps {
@@ -147,4 +147,5 @@ pipeline{
     //                 mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
     //       }      
     // }
+}
 }

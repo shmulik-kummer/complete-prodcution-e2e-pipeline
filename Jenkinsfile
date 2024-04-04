@@ -94,7 +94,7 @@ pipeline {
             steps {
                 dir("gitops") {
                     script {
-                        sh "sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
+                        sh "sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yml"
                         sh "git config user.email 'jenkins@example.com'"
                         sh "git config user.name 'Jenkins'"
                         sh "git add deployment.yaml"

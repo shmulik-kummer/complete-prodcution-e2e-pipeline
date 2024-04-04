@@ -81,6 +81,30 @@ pipeline{
 
         }
 
+
+        stage("Checkout GitOps Repo") {
+            steps {
+                dir("gitops") { // Checkout into a separate directory
+                    git branch: 'main', credentialsId: 'github', url: "https://github.com/shmulik-kummer/devops-repo"
+                }
+            }
+        }
+
+        stage("Update Deployment File") {
+            steps {
+                dir("gitops") {
+                    script {
+                        sh "sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
+                        sh "git config user.email 'jenkins@example.com'"
+                        sh "git config user.name 'Jenkins'"
+                        sh "git add deployment.yaml"
+                        sh "git commit -m 'Update image tag to ${IMAGE_TAG}'"
+                        sh "git push origin main"
+                    }
+                }
+            }
+        }
+
         // stage("Trivy Scan") {
         //     steps {
         //         script {
@@ -100,16 +124,16 @@ pipeline{
         // }
 
 
-        // stage("Trigger CD Pipeline") {
-        //     steps {
-        //         script {
-        //             sh "curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'https://jenkins.dev.dman.cloud/job/gitops-complete-pipeline/buildWithParameters?token=gitops-token'"
-        //         }
-        //     }
+    //     stage("Trigger CD Pipeline") {
+    //         steps {
+    //             script {
+    //                 sh "curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'https://192.168.64.5:8080/job/gitops-complete-pipeline/buildWithParameters?token=gitops-token'"
+    //             }
+    //         }
 
-        // }
+    //     }
 
-    }
+    // }
 
     // post {
     //     failure {

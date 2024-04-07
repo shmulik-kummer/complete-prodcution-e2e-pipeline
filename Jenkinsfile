@@ -95,17 +95,27 @@ pipeline {
                     dir("gitops") {
                 script {
                     // Assuming your Git remote is already configured to use HTTPS
+
                     sh "sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yml"
-                    sh "git config user.email 'kummersh@gmail.com'"
-                    sh "git config user.name 'shmulik-kummer'"
+                    // sh "git config user.email 'kummersh@gmail.com'"
+                    // sh "git config user.name 'shmulik-kummer'"
                     sh "git add deployment.yml"
                     sh "git commit -m 'Update image tag to ${IMAGE_TAG}'"
                     // Perform Git operations; Jenkins will use configured credentials for HTTPS remote
-                    sh "git push origin main"
                 }
             }
         }
 }
+
+          stage("Push to Git Repository") {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                    sh "git push -u origin main"
+                }
+            }
+        }
+
+        
 
 
         stage('Push Changes') {

@@ -109,7 +109,7 @@ pipeline {
 
           stage("Push to Git Repository") {
             steps {
-                sshagent(['github']) {
+                sshagent(credentials: ['github']) {
                     sh "git push -u origin main"
                 }
             }

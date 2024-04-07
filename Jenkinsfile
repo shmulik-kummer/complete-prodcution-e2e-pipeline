@@ -107,14 +107,14 @@ pipeline {
         }
 }
 
-          stage("Push to Git Repository") {
+         stage("Push to Git Repository") {
             steps {
-                sshagent(credentials: ['github']) {
-                    sh "git push -u origin main"
+                // Directly using the credential ID to get the token and embedding it in the command
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh "git push https://${GITHUB_TOKEN}@github.com/shmulik-kummer/devops-repo.git main"
                 }
             }
         }
-
         
 
 

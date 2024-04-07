@@ -118,24 +118,24 @@ pipeline {
         
 
 
-        stage('Push Changes') {
-    steps {
-        sshagent(credentials: ['github']) {
-            dir("gitops") {
-                script {
-                    sh '''
-                        sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yml
-                        git config user.email "you@example.com"
-                        git config user.name "Your Name"
-                        git add deployment.yml
-                        git commit -m "Update image tag to ${IMAGE_TAG}"
-                        git push origin main
-                    '''
-                }
-            }
-        }
-    }
-}
+//         stage('Push Changes') {
+//     steps {
+//         sshagent(credentials: ['github']) {
+//             dir("gitops") {
+//                 script {
+//                     sh '''
+//                         sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yml
+//                         git config user.email "you@example.com"
+//                         git config user.name "Your Name"
+//                         git add deployment.yml
+//                         git commit -m "Update image tag to ${IMAGE_TAG}"
+//                         git push origin main
+//                     '''
+//                 }
+//             }
+//         }
+//     }
+// }
 
         // stage("Trivy Scan") {
         //     steps {

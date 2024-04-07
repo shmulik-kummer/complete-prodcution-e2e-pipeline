@@ -109,7 +109,7 @@ pipeline {
 
           stage("Push to Git Repository") {
             steps {
-                withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                sshagent(['github']) {
                     sh "git push -u origin main"
                 }
             }

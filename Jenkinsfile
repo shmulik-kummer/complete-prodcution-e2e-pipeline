@@ -106,36 +106,19 @@ pipeline {
             }
         }
 }
-
-         stage("Push to Git Repository") {
-            steps {
-                // Directly using the credential ID to get the token and embedding it in the command
-                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                    sh "git push https://${GITHUB_TOKEN}@github.com/shmulik-kummer/devops-repo.git main"
-                }
-            }
-        }
         
 
 
-//         stage('Push Changes') {
-//     steps {
-//         sshagent(credentials: ['github']) {
-//             dir("gitops") {
-//                 script {
-//                     sh '''
-//                         sed -i 's|${IMAGE_NAME}:.*|${IMAGE_NAME}:${IMAGE_TAG}|' deployment.yml
-//                         git config user.email "you@example.com"
-//                         git config user.name "Your Name"
-//                         git add deployment.yml
-//                         git commit -m "Update image tag to ${IMAGE_TAG}"
-//                         git push origin main
-//                     '''
-//                 }
-//             }
-//         }
-//     }
-// }
+         stage("Push to Git Repository") {
+    steps {
+        // Ensure we are within the gitops directory to push
+        dir("gitops") {
+            withCredentials([string(credentialsId: 'github_secret', variable: 'GITHUB_TOKEN')]) {
+                sh "git push https://${GITHUB_TOKEN}@github.com/shmulik-kummer/devops-repo.git main"
+            }
+        }
+    }
+}
 
         // stage("Trivy Scan") {
         //     steps {
